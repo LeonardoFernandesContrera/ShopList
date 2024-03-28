@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
  
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
  
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -34,7 +35,7 @@ class _LoginViewState extends State<LoginView> {
               // Adicionando imagens
 
               Image.asset(
-                'lib/imagens/carrinho.png',
+                'lib/images/carrinho.png',
                 width: 200,
                 height: 200,
               ),
@@ -50,14 +51,13 @@ class _LoginViewState extends State<LoginView> {
                 ),
  
                 validator: (value){
-                  if(value == null){
-                    return 'Informe o login!';
+                  if(EmailValidator.validate(value.toString())){
+                    return null;
                   }
-                  else if(value.isEmpty){
-                    return 'Informe o login!';
+                  else{
+                    return "Informe um email correto";
                   }
                    
-                  return null;
                 },
               ),
 
