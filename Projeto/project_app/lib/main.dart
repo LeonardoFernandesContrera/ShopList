@@ -23,7 +23,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Lista de Compras',
-      initialRoute: 'login',
+      initialRoute: 'main_view',
       routes: {
         'login': (context) => LoginView(),
         'main_view': (context) => MainView(),
