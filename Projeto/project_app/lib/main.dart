@@ -2,6 +2,9 @@
 
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:project_app/view/forgetPassword_view.dart';
+import 'package:project_app/view/shopList_view.dart';
+import 'package:project_app/view/register_view.dart';
 
 import 'view/login_view.dart';
 import 'view/main_view.dart';
@@ -25,8 +28,11 @@ class MainApp extends StatelessWidget {
       title: 'Lista de Compras',
       initialRoute: 'main_view',
       routes: {
-        'login': (context) => LoginView(),
+        'login_view': (context) => LoginView(),
         'main_view': (context) => MainView(),
+        'register_view': (context) => RegisterView(),
+        'shopList_view': (context) => ShopListView(),
+        'forgetPassword_view': (context) => ForgetPasswordView(),
       },
     );
   }
