@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:project_app/model/items.dart';
 import 'package:project_app/model/shopList.dart';
  
 class ShopListView extends StatefulWidget {
@@ -10,6 +11,7 @@ class ShopListView extends StatefulWidget {
 }
 
 class _ShopListViewState extends State<ShopListView> {
+
   var formKey = GlobalKey<FormState>();
   List<ShopList> shopLists = [];
 
@@ -51,30 +53,141 @@ class _ShopListViewState extends State<ShopListView> {
               shrinkWrap: true,
               itemCount: shopLists.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(shopLists[index].name),
-                  subtitle: Text('Itens: ${shopLists[index].items?.length ?? 0}'),
-                  leading: IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      _editListName(context, index);
-                    },
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      _removeList(context, index);
-                    },
-                  ),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+                      title: Text(shopLists[index].name),
+                      subtitle: Text('Itens: ${shopLists[index].items?.length ?? 0}'),
+                      leading: IconButton(
+                        icon: Icon(Icons.edit),
+                        onPressed: () {
+                          _editListName(context, index);
+                        },
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              _addItem(context, index);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              _removeList(context, index);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (shopLists[index].items != null)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: shopLists[index].items!.map((item) {
+                          return ListTile(
+                            title: Text(item.name),
+                            subtitle: Text('Quantidade: ${item.quantity}'),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () {
+                                    _editItem(context, index, item);
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    _removeItem(context, index, item);
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                  ],
                 );
               },
             ),
-
           ],
         ),
       ),
     );
   }
+
+  void _addItem(BuildContext context, int listIndex) async {
+  final TextEditingController itemNameController = TextEditingController();
+  final TextEditingController itemQuantityController = TextEditingController(); // Adiciona um novo TextEditingController para a quantidade
+  final formKey = GlobalKey<FormState>();
+
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Adicionar Item'),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: itemNameController,
+                decoration: InputDecoration(labelText: 'Nome do item'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira um nome para o item.';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: itemQuantityController,
+                keyboardType: TextInputType.number, // Define o teclado para número para garantir que apenas números sejam inseridos
+                decoration: InputDecoration(labelText: 'Quantidade'), // Adiciona um campo para inserção da quantidade
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira a quantidade do item.';
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                String itemName = itemNameController.text;
+                int itemQuantity = int.parse(itemQuantityController.text);
+                setState(() {
+                  if (shopLists[listIndex].items == null) {
+                    shopLists[listIndex].items = [];
+                  }
+                  shopLists[listIndex].items!.add(Items(name: itemName, quantity: itemQuantity)); 
+                });
+                Navigator.of(context).pop();
+              }
+            },
+            child: Text('Adicionar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 
   Future<void> _dialogBuilder(BuildContext context) async {
     final TextEditingController txtName = TextEditingController();
@@ -220,4 +333,99 @@ class _ShopListViewState extends State<ShopListView> {
       },
     );
   }
+
+  void _editItem(BuildContext context, int listIndex, Items item) async {
+  final TextEditingController itemNameController = TextEditingController(text: item.name);
+  final TextEditingController itemQuantityController = TextEditingController(text: item.quantity.toString());
+  final formKey = GlobalKey<FormState>();
+
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Editar Item'),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: itemNameController,
+                decoration: InputDecoration(labelText: 'Nome do item'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira um nome para o item.';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: itemQuantityController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: 'Quantidade'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, insira a quantidade do item.';
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                String itemName = itemNameController.text;
+                int itemQuantity = int.parse(itemQuantityController.text);
+                setState(() {
+                  shopLists[listIndex].items![shopLists[listIndex].items!.indexOf(item)] = Items(name: itemName, quantity: itemQuantity);
+                });
+                Navigator.of(context).pop();
+              }
+            },
+            child: Text('Salvar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _removeItem(BuildContext context, int listIndex, Items item) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Remover Item'),
+        content: Text('Tem certeza que deseja remover o item "${item.name}"?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                shopLists[listIndex].items!.remove(item);
+              });
+              Navigator.of(context).pop();
+            },
+            child: Text('Remover'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 }
