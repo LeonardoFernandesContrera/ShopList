@@ -4,7 +4,7 @@ import 'package:project_app/model/items.dart';
 import 'package:project_app/model/shopList.dart';
  
 class ShopListView extends StatefulWidget {
-  const ShopListView({super.key});
+  const ShopListView({Key? key}) : super(key: key);
  
   @override
   State<ShopListView> createState() => _ShopListViewState();
@@ -14,9 +14,14 @@ class _ShopListViewState extends State<ShopListView> {
 
   var formKey = GlobalKey<FormState>();
   List<ShopList> shopLists = [];
+  String searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
+    List<ShopList> filteredLists = shopLists.where((list) {
+      return list.name.toLowerCase().contains(searchQuery.toLowerCase());
+    }).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -27,14 +32,31 @@ class _ShopListViewState extends State<ShopListView> {
         backgroundColor: Colors.blue.shade500,
         foregroundColor: Colors.white,
       ),
+
       body: SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: 20),
+
             Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Pesquisar lista...',
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          searchQuery = value;
+                        });
+                      },
+                    ),
+                  ),
+
+                  SizedBox(width: 8),
+                  
                   TextButton(
                     onPressed: () {
                       _dialogBuilder(context);
@@ -43,53 +65,83 @@ class _ShopListViewState extends State<ShopListView> {
                       'Criar uma lista',
                       style: TextStyle(color: Colors.blue.shade500),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
             SizedBox(height: 20),
-            // Exibir as listas de compras
+            
             ListView.builder(
               shrinkWrap: true,
-              itemCount: shopLists.length,
+              itemCount: filteredLists.length,
               itemBuilder: (context, index) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ListTile(
-                      title: Text(shopLists[index].name),
-                      subtitle: Text('Itens: ${shopLists[index].items?.length ?? 0}'),
-                      leading: IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () {
-                          _editListName(context, index);
+                    Card(
+                      color: Colors.grey.shade50,
+                      child: ListTile(
+                        title: Text(filteredLists[index].name),
+                        subtitle: Text('Itens: ${filteredLists[index].items?.length ?? 0}'),
+                        onTap: () {
+                          setState(() {
+                            filteredLists[index].showItems = !filteredLists[index].showItems;
+                          });
                         },
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              _addItem(context, index);
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              _removeList(context, index);
-                            },
-                          ),
-                        ],
+                        leading: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Checkbox(
+                              value: filteredLists[index].isChecked,
+                              onChanged: (value){
+                                setState(() {
+                                  filteredLists[index].isChecked = value!;
+                                });
+                              },
+                            ),
+
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {
+                                _editListName(context, index);
+                              },
+                            ),
+                          ],
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                _addItem(context, index);
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                _removeList(context, index);
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    if (shopLists[index].items != null)
+                    if (shopLists[index].showItems && shopLists[index].items != null)
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: shopLists[index].items!.map((item) {
                           return ListTile(
                             title: Text(item.name),
                             subtitle: Text('Quantidade: ${item.quantity}'),
+                            leading: Checkbox(
+                              value: item.isChecked,
+                              onChanged: (value){
+                                setState(() {
+                                  item.isChecked = value!;
+                                });
+                              },
+                            ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [

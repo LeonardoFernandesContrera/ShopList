@@ -13,15 +13,12 @@ class ForgetPasswordView extends StatefulWidget {
 class _ForgetPasswordViewState extends State<ForgetPasswordView> {
 
   var formkey = GlobalKey<FormState>();
- 
-  // Controlador dos textbox
+
   var txtlogin = TextEditingController();
   var txtsenha = TextEditingController();
   var txtNovaSenha = TextEditingController();
   var txtConfirmaSenha = TextEditingController();
 
- 
-  // Ocultar - Mostrar senha
   bool _isObscure = true;
   bool _isObscure2 = true;
 
@@ -45,8 +42,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
             Text('Esqueceu Senha',style: TextStyle(fontSize: 20),),
 
              SizedBox(height: 20,),
-              //Textfield login
- 
+
               TextFormField(
                 controller: txtlogin,
                 style: TextStyle(fontSize: 18),
@@ -97,8 +93,6 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                   return null;
                 },
               ),
-
-              //Textfield senha
  
               SizedBox(height: 20),
               
@@ -163,8 +157,6 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 },
               ),
 
-              // Login button
-
               SizedBox(height: 30),
 
               ElevatedButton(
@@ -184,7 +176,6 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                       for (int i = 0; i < Logins.length; i++) {
                         if (Logins[i].email == email) {
                           loginEncontrado = true;
-                          // Atualizar a senha do login encontrado
                           Logins[i].senha = txtNovaSenha.text;
                           break;
                         }

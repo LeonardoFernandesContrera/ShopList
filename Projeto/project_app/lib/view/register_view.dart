@@ -13,8 +13,6 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
 
   var formkey = GlobalKey<FormState>();
- 
-  // Controlador dos textbox
   var txtregister = TextEditingController();
   var txtsenha = TextEditingController();
 
@@ -115,14 +113,6 @@ class _RegisterViewState extends State<RegisterView> {
                   minimumSize: Size(200, 50),
                   shadowColor: Colors.black,
                 ),
-                // onPressed: (){
-                //   if(formkey.currentState!.validate()){
-                //     Navigator.pushNamed(
-                //       context,
-                //       'shopList_view',
-                //     );
-                //   }
-                // },
                 onPressed: (){
                 if(formkey.currentState!.validate()){
                   String email = txtregister.text;
