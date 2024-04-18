@@ -21,6 +21,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
 
   bool _isObscure = true;
   bool _isObscure2 = true;
+  bool _isObscure3 = true;
 
 
   @override
@@ -99,16 +100,16 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
               TextFormField(
                 controller: txtNovaSenha,
                 style: TextStyle(fontSize: 18),
-                obscureText: _isObscure,
+                obscureText: _isObscure2,
                 decoration: InputDecoration(
                   labelText: 'Nova senha',
                   prefixIcon: Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _isObscure ? Icons.visibility : Icons.visibility_off),
+                      _isObscure2 ? Icons.visibility : Icons.visibility_off),
                     onPressed: () {
                       setState(() {
-                        _isObscure = !_isObscure;
+                        _isObscure2 = !_isObscure2;
                       });
                     },
                   )
@@ -130,16 +131,16 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
               TextFormField(
                 controller: txtConfirmaSenha,
                 style: TextStyle(fontSize: 18),
-                obscureText: _isObscure2,
+                obscureText: _isObscure3,
                 decoration: InputDecoration(
                   labelText: 'Confirme nova senha',
                   prefixIcon: Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _isObscure ? Icons.visibility : Icons.visibility_off),
+                      _isObscure3 ? Icons.visibility : Icons.visibility_off),
                     onPressed: () {
                       setState(() {
-                        _isObscure2 = !_isObscure2;
+                        _isObscure3 = !_isObscure3;
                       });
                     },
                   )
@@ -166,7 +167,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                   shadowColor: Colors.black,
                 ),
                 onPressed: () {
-                  if(txtNovaSenha == txtConfirmaSenha){
+                  if(txtNovaSenha.text == txtConfirmaSenha.text){
                     if (formkey.currentState!.validate()) {
                       String email = txtlogin.text;
                       String senha = txtsenha.text;
