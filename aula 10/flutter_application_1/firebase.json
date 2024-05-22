@@ -1,0 +1,37 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "app-lista-compra-fatec",
+          "appId": "1:980998008410:android:60292bd41046ca96bd7263",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "app-lista-compra-fatec",
+          "configurations": {
+            "android": "1:980998008410:android:60292bd41046ca96bd7263",
+            "ios": "1:980998008410:ios:1fbd38050c71deb4bd7263",
+            "web": "1:980998008410:web:b6df5cbb0ab6c654bd7263"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

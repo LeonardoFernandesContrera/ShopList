@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "980998008410",
+    "project_id": "app-lista-compra-fatec",
+    "storage_bucket": "app-lista-compra-fatec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:980998008410:android:60292bd41046ca96bd7263",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPPnO6Dv50BLs2gQabBh7lc_8Waw_17y0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
