@@ -14,14 +14,11 @@ class LoginView extends StatefulWidget {
  
 class _LoginViewState extends State<LoginView> {
  
-  // Chave identificador Form
   var formkey = GlobalKey<FormState>();
  
-  // Controlador dos textbox
   var txtlogin = TextEditingController();
   var txtsenha = TextEditingController();
  
-  // Ocultar - Mostrar senha
   bool _isObscure = true;
  
   @override
@@ -40,7 +37,6 @@ class _LoginViewState extends State<LoginView> {
           child: Column(
             children: [
 
-              // Adicionando imagens
               SizedBox(
                 child: 
                   Image.network('https://static.vecteezy.com/system/resources/previews/000/355/589/original/vector-shopping-cart-icon.jpg'),
@@ -53,8 +49,7 @@ class _LoginViewState extends State<LoginView> {
             Text('Login',style: TextStyle(fontSize: 20),),
 
              SizedBox(height: 20,),
-              //Textfield login
- 
+
               TextFormField(
                 controller: txtlogin,
                 style: TextStyle(fontSize: 18),
@@ -74,8 +69,6 @@ class _LoginViewState extends State<LoginView> {
                    
                 },
               ),
-
-              //Textfield senha
  
               SizedBox(height: 20),
               TextFormField(
@@ -107,8 +100,6 @@ class _LoginViewState extends State<LoginView> {
                   return null;
                 },
               ),
-
-              // Login button
 
               SizedBox(height: 30),
 

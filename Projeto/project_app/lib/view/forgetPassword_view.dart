@@ -13,17 +13,15 @@ class ForgetPasswordView extends StatefulWidget {
 class _ForgetPasswordViewState extends State<ForgetPasswordView> {
 
   var formkey = GlobalKey<FormState>();
- 
-  // Controlador dos textbox
+
   var txtlogin = TextEditingController();
   var txtsenha = TextEditingController();
   var txtNovaSenha = TextEditingController();
   var txtConfirmaSenha = TextEditingController();
 
- 
-  // Ocultar - Mostrar senha
   bool _isObscure = true;
   bool _isObscure2 = true;
+  bool _isObscure3 = true;
 
 
   @override
@@ -45,8 +43,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
             Text('Esqueceu Senha',style: TextStyle(fontSize: 20),),
 
              SizedBox(height: 20,),
-              //Textfield login
- 
+
               TextFormField(
                 controller: txtlogin,
                 style: TextStyle(fontSize: 18),
@@ -97,24 +94,22 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                   return null;
                 },
               ),
-
-              //Textfield senha
  
               SizedBox(height: 20),
               
               TextFormField(
                 controller: txtNovaSenha,
                 style: TextStyle(fontSize: 18),
-                obscureText: _isObscure,
+                obscureText: _isObscure2,
                 decoration: InputDecoration(
                   labelText: 'Nova senha',
                   prefixIcon: Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _isObscure ? Icons.visibility : Icons.visibility_off),
+                      _isObscure2 ? Icons.visibility : Icons.visibility_off),
                     onPressed: () {
                       setState(() {
-                        _isObscure = !_isObscure;
+                        _isObscure2 = !_isObscure2;
                       });
                     },
                   )
@@ -136,16 +131,16 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
               TextFormField(
                 controller: txtConfirmaSenha,
                 style: TextStyle(fontSize: 18),
-                obscureText: _isObscure2,
+                obscureText: _isObscure3,
                 decoration: InputDecoration(
                   labelText: 'Confirme nova senha',
                   prefixIcon: Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _isObscure ? Icons.visibility : Icons.visibility_off),
+                      _isObscure3 ? Icons.visibility : Icons.visibility_off),
                     onPressed: () {
                       setState(() {
-                        _isObscure2 = !_isObscure2;
+                        _isObscure3 = !_isObscure3;
                       });
                     },
                   )
@@ -163,8 +158,6 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                 },
               ),
 
-              // Login button
-
               SizedBox(height: 30),
 
               ElevatedButton(
@@ -174,7 +167,7 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                   shadowColor: Colors.black,
                 ),
                 onPressed: () {
-                  if(txtNovaSenha == txtConfirmaSenha){
+                  if(txtNovaSenha.text == txtConfirmaSenha.text){
                     if (formkey.currentState!.validate()) {
                       String email = txtlogin.text;
                       String senha = txtsenha.text;
@@ -184,7 +177,6 @@ class _ForgetPasswordViewState extends State<ForgetPasswordView> {
                       for (int i = 0; i < Logins.length; i++) {
                         if (Logins[i].email == email) {
                           loginEncontrado = true;
-                          // Atualizar a senha do login encontrado
                           Logins[i].senha = txtNovaSenha.text;
                           break;
                         }

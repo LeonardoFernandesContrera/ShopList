@@ -3,6 +3,8 @@ import 'package:project_app/model/items.dart';
 class ShopList {
   String name;
   List<Items>? items;
+  bool isChecked = false;
+  bool showItems = false;
 
   ShopList({required this.name});
 
